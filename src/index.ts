@@ -57,15 +57,15 @@ async function analyse(inputString: string) {
     if (first.reading && second.reading) {
       // firstとsecondのreading.lengthのうち、短い方を
       const minLength = Math.min(first.reading.length, second.reading.length);
-      for (let j = 0; j < minLength; j++) {
-        const firstReading = first.reading.slice(first.reading.length - j - 1);
-        const secondReading = second.reading.slice(0, j + 1);
+      for (let j = 1; j < minLength; j++) {
+        const firstReading = first.reading.slice(first.reading.length - j);
+        const secondReading = second.reading.slice(0, j);
         console.log(firstReading, secondReading);
         if (firstReading === secondReading) {
           gomamayoResult.isGomamayo = true;
           gomamayoResult.detail.push({
             surface: first.surface + second.surface,
-            dimension: j + 1,
+            dimension: j,
           });
           gomamayoResult.combo++;
         }
