@@ -3,9 +3,13 @@ const mecab = new MeCab(["mecab"]);
 
 type gomamayo = {
   isGomamayo: boolean;
-  surface?: string; // 該当の2語を入れる
   combo?: number; // 実装はまだ先
-  dimension?: number; // n次ゴママヨのn
+  detail?: gomamayoDetail[];
+};
+
+type gomamayoDetail = {
+  surface: string; // 該当の2語を入れる
+  dimension: number; // n次ゴママヨのn
 };
 
 async function parse(inputString: string) {
@@ -26,7 +30,11 @@ async function parse(inputString: string) {
 }
 
 async function analyse(inputString: string) {
-  const gomamayoArray: gomamayo[] = [];
+  const gomamayoResult: gomamayo = {
+    isGomamayo: false,
+    combo: 0,
+    detail: [],
+  };
   const rawParseResult = await parse(inputString);
 
   console.table(rawParseResult);
@@ -45,7 +53,7 @@ async function analyse(inputString: string) {
     }
     // first.readingを後ろから1文字ずつ見ていく
     // 同時に、second.readingを先頭から1文字ずつ見ていく
-    // 一致したら、gomamayoArrayにpushする
+    // 一致したら、gomamayoResultにpushする
     if (first.reading && second.reading) {
       // firstとsecondのreading.lengthのうち、短い方を
       const minLength = Math.min(first.reading.length, second.reading.length);
@@ -54,20 +62,17 @@ async function analyse(inputString: string) {
         const secondReading = second.reading.slice(0, j + 1);
         console.log(firstReading, secondReading);
         if (firstReading === secondReading) {
-          gomamayoArray.push({
-            isGomamayo: true,
+          gomamayoResult.isGomamayo = true;
+          gomamayoResult.detail!.push({
             surface: first.surface + second.surface,
             dimension: j + 1,
           });
-          return gomamayoArray;
+          gomamayoResult.combo!++;
         }
       }
     }
   }
-  if (gomamayoArray.length === 0) {
-    return [{ isGomamayo: false, surface: null }];
-  }
-  return gomamayoArray;
+  return gomamayoResult;
 }
 
 export { analyse, parse };
