@@ -1,7 +1,7 @@
 import { MeCab } from "https://deno.land/x/deno_mecab@v1.1.1/mod.ts";
 const mecab = new MeCab(["mecab"]);
 
-type gomamayo = {
+type gomamayoResult = {
   isGomamayo: boolean;
   combo: number; // 実装はまだ先
   detail: gomamayoDetail[];
@@ -30,7 +30,7 @@ async function parse(inputString: string) {
 }
 
 async function analyse(inputString: string) {
-  const gomamayoResult: gomamayo = {
+  const gomamayoResult: gomamayoResult = {
     isGomamayo: false,
     combo: 0,
     detail: [],
