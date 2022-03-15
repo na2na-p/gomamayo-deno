@@ -3,8 +3,8 @@ const mecab = new MeCab(["mecab"]);
 
 type gomamayo = {
   isGomamayo: boolean;
-  combo?: number; // 実装はまだ先
-  detail?: gomamayoDetail[];
+  combo: number; // 実装はまだ先
+  detail: gomamayoDetail[];
 };
 
 type gomamayoDetail = {
@@ -63,11 +63,11 @@ async function analyse(inputString: string) {
         console.log(firstReading, secondReading);
         if (firstReading === secondReading) {
           gomamayoResult.isGomamayo = true;
-          gomamayoResult.detail!.push({
+          gomamayoResult.detail.push({
             surface: first.surface + second.surface,
             dimension: j + 1,
           });
-          gomamayoResult.combo!++;
+          gomamayoResult.combo++;
         }
       }
     }
