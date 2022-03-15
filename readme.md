@@ -5,6 +5,10 @@
 言葉遊びである、[ゴママヨ](https://thinaticsystem.com/glossary/gomamayo/)を MeCab を用いて検出しよう、という物です。  
 すでに Node.js で動作する[gomamayo.js](https://github.com/ThinaticSystem/gomamayo.js)は存在していますが、こちらは Deno で動作するものとなっております。
 
+# お借りしたもの
+
+長音対応にあたり、ThinaticSystem氏より許可を頂いて、[gomamayo.js/assets/vowel_define.json](https://github.com/ThinaticSystem/gomamayo.js/blob/main/assets/vowel_define.json)をそのまま使用しています。
+
 # 使い方
 
 `deno run --allow-run src/cli.ts 株式公開買付`で実行できます。
