@@ -8,3 +8,6 @@
 # 使い方
 
 `deno run --allow-run src/cli.ts 株式公開買付`で実行できます。
+
+実行結果
+![実行結果](https://misskey.na2na.dev/media/media/fefc29f7-05a6-4364-8f6a-f56f5ad0340f.png)
