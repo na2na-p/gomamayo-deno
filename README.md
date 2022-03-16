@@ -14,9 +14,8 @@ Only work on Japanese.
 
 ## Example
 
-`deno run --allow-run --allow-read https://deno.land/x/gomamayo_deno/src/cli.ts 株式公開買付`
-Alternatively, you can use the
-Please refer to `https://deno.land/x/gomamayo_deno/src/example.ts`.
+`deno run --allow-run --allow-read https://deno.land/x/gomamayo_deno/src/cli.ts 株式公開買付`  
+Alternatively, you can use the Please refer to `https://deno.land/x/gomamayo_deno/src/example.ts`.
 
 ## Example Result
 
