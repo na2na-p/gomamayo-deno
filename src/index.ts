@@ -111,4 +111,4 @@ async function analyse(inputString: string): Promise<gomamayoResult> {
   return gomamayoResult;
 }
 
-export { analyse, parse };
+export { analyse };
