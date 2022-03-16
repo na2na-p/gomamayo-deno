@@ -14,4 +14,4 @@
 `deno run --allow-run --allow-read src/cli.ts 株式公開買付`で実行できます。
 
 実行結果
-![実行結果](https://misskey.na2na.dev/media/media/b1fb0be5-bece-4f24-a74f-6204e491c423.png)
+![実行結果](https://misskey.na2na.dev/media/media/dcd6b37b-205c-427e-a4d3-391023cec7bc.png)

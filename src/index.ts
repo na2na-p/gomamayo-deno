@@ -5,13 +5,15 @@ const mecab = new MeCab(["mecab"]);
 
 type gomamayoResult = {
   isGomamayo: boolean;
-  combo: number; // 実装はまだ先
+  combo: number; // inputString中にあるゴママヨの総数
   detail: gomamayoDetail[];
 };
 
 type gomamayoDetail = {
   surface: string; // 該当の2語を入れる
   dimension: number; // n次ゴママヨのn
+  rawResult1: any; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
+  rawResult2: any; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
 };
 
 async function parse(inputString: string) {
@@ -86,6 +88,8 @@ async function analyse(inputString: string) {
           gomamayoResult.detail.push({
             surface: first.surface + "|" + second.surface,
             dimension: j,
+            rawResult1: first,
+            rawResult2: second,
           });
           gomamayoResult.combo++;
         }
