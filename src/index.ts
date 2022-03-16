@@ -37,11 +37,6 @@ async function analyse(inputString: string) {
   };
   const rawParseResult = await parse(inputString);
 
-  console.table(rawParseResult);
-  console.log(
-    "##################################################################################",
-  );
-
   for (let i = 0; i < rawParseResult.length - 1; i++) {
     const first = rawParseResult[i];
     const second = rawParseResult[i + 1];
@@ -60,11 +55,10 @@ async function analyse(inputString: string) {
       for (let j = 1; j < minLength; j++) {
         const firstReading = first.reading.slice(first.reading.length - j);
         const secondReading = second.reading.slice(0, j);
-        console.log(firstReading, secondReading);
         if (firstReading === secondReading) {
           gomamayoResult.isGomamayo = true;
           gomamayoResult.detail.push({
-            surface: first.surface + second.surface,
+            surface: first.surface + "|" + second.surface,
             dimension: j,
           });
           gomamayoResult.combo++;
