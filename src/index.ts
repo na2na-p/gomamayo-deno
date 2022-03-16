@@ -54,7 +54,7 @@ async function analyse(inputString: string) {
   const rawParseResult = await parse(inputString);
 
   // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
-  const parseResult = rawParseResult.map((raw) => {
+  rawParseResult.map((raw) => {
     if (typeof raw.reading !== "undefined") {
       if (raw.reading.includes("ー")) {
         raw.reading = prolongedSoundMarkVowelize(raw.reading);
