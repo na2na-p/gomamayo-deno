@@ -18,7 +18,9 @@
 
 ## 実行例
 
-`deno run --allow-run --allow-read https://raw.githubusercontent.com/na2na-p/gomamayo-deno/master/mod.ts 株式公開買付`
+`deno run --allow-run --allow-read https://deno.land/x/gomamayo_deno/src/cli.ts 株式公開買付`
+あるいは、
+`https://deno.land/x/gomamayo_deno/src/example.ts`を参考にしてください。
 
 ## 実行結果
 
