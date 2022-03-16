@@ -16,6 +16,10 @@ type gomamayoDetail = {
   rawResult2: any; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
 };
 
+/**
+ * @param {string} inputString 
+ * @return {MeCab.ParsedWord[]}
+ */
 async function parse(inputString: string) {
   const rawResult = await mecab.parse(inputString);
 
@@ -32,7 +36,11 @@ async function parse(inputString: string) {
   return parseResult;
 }
 
-function prolongedSoundMarkVowelize(rawReading: string) {
+/**
+ * @param {string} rawReading 
+ * @return {string}
+ */
+function prolongedSoundMarkVowelize(rawReading: string): string {
   const vowelDefineJSON = JSON.parse(vowelDefine);
   // readingに長音が含まれている場合はすべてカタカナに変換する
   let returnReading = "";
@@ -47,7 +55,11 @@ function prolongedSoundMarkVowelize(rawReading: string) {
   return returnReading;
 }
 
-async function analyse(inputString: string) {
+/**
+ * @param {string} 判定したい文字列
+ * @return 分析結果
+ */
+async function analyse(inputString: string): Promise<gomamayoResult> {
   const gomamayoResult: gomamayoResult = {
     isGomamayo: false,
     combo: 0,
