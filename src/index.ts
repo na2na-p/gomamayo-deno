@@ -1,4 +1,6 @@
 import { MeCab } from "https://deno.land/x/deno_mecab@v1.1.1/mod.ts";
+// assets/vowel_define.jsonを読み込む
+const vowelDefine = await Deno.readTextFile("./assets/vowel_define.json");
 const mecab = new MeCab(["mecab"]);
 
 type gomamayoResult = {
@@ -25,8 +27,22 @@ async function parse(inputString: string) {
     }
     return raw;
   });
-
   return parseResult;
+}
+
+function prolongedSoundMarkVowelize(rawReading: string) {
+  const vowelDefineJSON = JSON.parse(vowelDefine);
+  // readingに長音が含まれている場合はすべてカタカナに変換する
+  let returnReading = "";
+  rawReading.replace(/[ぁ-ゖ]/g, (s) => {
+    return String.fromCharCode(s.charCodeAt(0) + 0x60);
+  });
+  for (let i = 0; i < rawReading.length; i++) {
+    const prev = rawReading[i - 1];
+    const current = rawReading[i];
+    returnReading += (current === "ー") ? vowelDefineJSON[prev] : current;
+  }
+  return returnReading;
 }
 
 async function analyse(inputString: string) {
@@ -36,6 +52,16 @@ async function analyse(inputString: string) {
     detail: [],
   };
   const rawParseResult = await parse(inputString);
+
+  // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
+  const parseResult = rawParseResult.map((raw) => {
+    if (typeof raw.reading !== "undefined") {
+      if (raw.reading.includes("ー")) {
+        raw.reading = prolongedSoundMarkVowelize(raw.reading);
+      }
+    }
+    return raw;
+  });
 
   for (let i = 0; i < rawParseResult.length - 1; i++) {
     const first = rawParseResult[i];
