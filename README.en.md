@@ -1,7 +1,7 @@
 # What
 
-This is an attempt to detect [gomamayo](https://thinaticsystem.com/glossary/gomamayo/), a play on words, using MeCab.
-Only work on Japanese.
+This is an attempt to detect [gomamayo](https://thinaticsystem.com/glossary/gomamayo/), a play on words, using MeCab.  
+Only works in Japanese.
 
 # Getting Started
 
@@ -9,8 +9,8 @@ Only work on Japanese.
 
 - deno
 - MeCab
-- MeCab dictionary
-  We recommend the use of mecab-ipadic-neologd. (https://github.com/neologd/mecab-ipadic-neologd)
+- MeCab dictionary  
+  Use of mecab-ipadic-neologd is recommended (https://github.com/neologd/mecab-ipadic-neologd)
 
 ## Example
 
