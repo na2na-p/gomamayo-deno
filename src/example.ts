@@ -14,6 +14,11 @@ switch (mode) {
     console.log(await gomamayo.addIgnoreWord(inputString));
     break;
 
+  case "removeIgnore":
+    console.log("removeIgnore");
+    console.log(await gomamayo.removeIgnoreWord(inputString));
+    break;
+
   case "analyse":
     console.log(await gomamayo.analyse(inputString));
     break;

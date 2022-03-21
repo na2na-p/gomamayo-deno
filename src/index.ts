@@ -54,7 +54,7 @@ class Gomamayo {
    * @param {string} inputString
    * @return {ParsedWord[]}
    */
-  public async parse(inputString: string): Promise<ParsedWord[]> {
+  private async parse(inputString: string): Promise<ParsedWord[]> {
     const rawResult = await this.mecab.parse(inputString);
 
     // rawResult.pronunciationがundefinedの場合、rawResult.pronunciation = rawResult.surfaceとなるようにする
@@ -74,7 +74,7 @@ class Gomamayo {
    * @param {string} rawReading
    * @return {string}
    */
-  public prolongedSoundMarkVowelize(rawReading: string): string {
+  private prolongedSoundMarkVowelize(rawReading: string): string {
     const vowelDefineJSON = JSON.parse(this.vowelDefine);
     // readingに長音が含まれている場合はすべてカタカナに変換する
     let returnReading = "";
@@ -89,7 +89,7 @@ class Gomamayo {
     return returnReading;
   }
 
-  private async ignoreWordRemove(inputString: string): Promise<string> {
+  private async queryIgnoreWordRemove(inputString: string): Promise<string> {
     if (this.db) {
       let result: string = inputString;
       const ignoreWords = await this.db.findMany();
@@ -99,7 +99,7 @@ class Gomamayo {
           console.log(
             `除外ワード:${ignoreWords[i].surface}`,
           );
-            result = inputString.split(ignoreWords[i].surface).join("")
+          result = inputString.split(ignoreWords[i].surface).join("");
         }
       }
       return result;
@@ -125,14 +125,14 @@ class Gomamayo {
 
     const _rawInputString = inputString;
     // console.log(`分析対象:${_rawInputString}`);
-    
+
     if (isIgnored) {
       console.log("除外設定を使用します。");
-      inputString = await this.ignoreWordRemove(inputString);
+      inputString = await this.queryIgnoreWordRemove(inputString);
     }
-    
+
     const rawParseResult = await this.parse(inputString);
-    
+
     // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
     rawParseResult.map((raw) => {
       if (typeof raw.reading !== "undefined") {
@@ -189,6 +189,29 @@ class Gomamayo {
       })
         .then(() => {
           console.log(`${word} を除外設定に追加しました。`);
+        })
+        .catch((err) => {
+          console.error(err);
+          return false;
+        });
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
+  }
+
+  /**
+   * 除外ワードリストから除去する
+   * @param word
+   * @returns
+   */
+  public removeIgnoreWord(word: string): Promise<boolean> {
+    if (this.db) {
+      this.db.deleteOne({
+        surface: word,
+      })
+        .then(() => {
+          console.log(`${word} を除外設定から削除しました。`);
         })
         .catch((err) => {
           console.error(err);
