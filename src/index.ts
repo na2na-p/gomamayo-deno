@@ -62,10 +62,11 @@ class Gomamayo {
   }
 
   /**
-   * @param {string} 判定したい文字列
+   * @param {string} inputString 判定したい文字列
+   * @param {boolean} isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
    * @return 分析結果
    */
-  public async analyse(inputString: string): Promise<gomamayoResult> {
+  public async analyse(inputString: string, isIgnored?: boolean): Promise<gomamayoResult> {
     const gomamayoResult: gomamayoResult = {
       isGomamayo: false,
       combo: 0,
