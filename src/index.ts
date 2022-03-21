@@ -49,7 +49,7 @@ class Gomamayo {
       this.db = null;
     }
   }
-  
+
   /**
    * @param {string} inputString
    * @return {ParsedWord[]}
@@ -89,6 +89,25 @@ class Gomamayo {
     return returnReading;
   }
 
+  private async ignoreWordRemove(inputString: string): Promise<string> {
+    if (this.db) {
+      let result: string = inputString;
+      const ignoreWords = await this.db.findMany();
+      // ignoreWords[i].surfaceが、inputStringに含まれているかどうかを判定する
+      for (let i = 0; i < ignoreWords.length; i++) {
+        if (result.includes(ignoreWords[i].surface)) {
+          console.log(
+            `除外ワード:${ignoreWords[i].surface}`,
+          );
+            result = inputString.split(ignoreWords[i].surface).join("")
+        }
+      }
+      return result;
+    } else {
+      return inputString;
+    }
+  }
+
   /**
    * @param {string} inputString 判定したい文字列
    * @param isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
@@ -103,22 +122,17 @@ class Gomamayo {
       combo: 0,
       detail: [],
     };
-    const rawParseResult = await this.parse(inputString);
 
+    const _rawInputString = inputString;
+    // console.log(`分析対象:${_rawInputString}`);
+    
     if (isIgnored) {
       console.log("除外設定を使用します。");
-      if (this.db) {
-        const ignoreWords = await this.db.findMany();
-        // ignoreWords[i].surfaceが、inputStringに含まれているかどうかを判定する
-        for (let i = 0; i < ignoreWords.length; i++) {
-          if (inputString.includes(ignoreWords[i].surface)) {
-            console.log(`除外ワード\n${ignoreWords[i].surface}\nが含まれていたため、判定を中断します。`);
-            return gomamayoResult;
-          }
-        }
-      }
+      inputString = await this.ignoreWordRemove(inputString);
     }
-
+    
+    const rawParseResult = await this.parse(inputString);
+    
     // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
     rawParseResult.map((raw) => {
       if (typeof raw.reading !== "undefined") {
@@ -173,13 +187,13 @@ class Gomamayo {
       this.db.insertOne({
         surface: word,
       })
-      .then(() => {
-        console.log(`${word} を除外設定に追加しました。`);
-      })
-      .catch((err) => {
-        console.error(err);
-        return false;
-      });
+        .then(() => {
+          console.log(`${word} を除外設定に追加しました。`);
+        })
+        .catch((err) => {
+          console.error(err);
+          return false;
+        });
       return Promise.resolve(true);
     } else {
       return Promise.resolve(false);
