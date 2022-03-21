@@ -199,6 +199,29 @@ class Gomamayo {
       return Promise.resolve(false);
     }
   }
+
+  /**
+   * 除外ワードリストから除去する
+   * @param word
+   * @returns
+   */
+  public removeIgnoreWord(word: string): Promise<boolean> {
+    if (this.db) {
+      this.db.deleteOne({
+        surface: word,
+      })
+        .then(() => {
+          console.log(`${word} を除外設定から削除しました。`);
+        })
+        .catch((err) => {
+          console.error(err);
+          return false;
+        });
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
+  }
 }
 
 export { Gomamayo };
