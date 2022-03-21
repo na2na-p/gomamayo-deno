@@ -13,8 +13,10 @@
 
 - Deno
 - MeCab
-- MeCab 辞書
-  [mecab-ipadic-neologd](https://github.com/neologd/mecab-ipadic-neologd)がおすすめです。
+- MeCab 辞書  
+  - [mecab-ipadic-neologd](https://github.com/neologd/mecab-ipadic-neologd)がおすすめです。
+- 除外設定用設定ファイル  
+  - 必須ではありません。
 
 ## 実行例
 

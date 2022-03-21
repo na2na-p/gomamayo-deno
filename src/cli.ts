@@ -1,6 +1,22 @@
 import { Gomamayo } from "./index.ts";
-const inputString:string = Deno.args[0];
+const mode = Deno.args[0]; // "analyse" or "addIgnore"
+const inputString: string = Deno.args[1];
 
-const gomamayo = new Gomamayo();
+// "../data/ignoreWords.json"に設定ファイルがあると想定しています。
+// なければ作成してください。
+const gomamayo = new Gomamayo("../data/ignoreWords.json");
 
-console.log(await gomamayo.analyse(inputString));
+switch (mode) {
+  case "addIgnore":
+    console.log("addIgnore");
+    console.log(await gomamayo.addIgnoreWord(inputString));
+    break;
+
+  case "analyse":
+    console.log(await gomamayo.analyse(inputString));
+    break;
+
+  default:
+    console.log(await gomamayo.analyse(inputString));
+    break;
+}

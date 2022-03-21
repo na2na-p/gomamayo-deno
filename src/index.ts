@@ -1,5 +1,5 @@
 import { MeCab } from "https://deno.land/x/deno_mecab@v1.1.1/mod.ts";
-// assets/vowel_define.jsonを読み込む
+import { Database } from "https://deno.land/x/aloedb@0.9.0/mod.ts";
 
 interface ParsedWord {
   // 0
@@ -31,20 +31,30 @@ interface gomamayoDetail {
   rawResult2: ParsedWord; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
 }
 
+interface ignoreWord {
+  surface: string;
+}
 
 class Gomamayo {
   private vowelDefine: string;
   private mecab = new MeCab(["mecab"]);
-  
-  constructor() {
-    this.vowelDefine = Deno.readTextFileSync("./assets/vowel_define.json");
-  }
+  private db: Database<ignoreWord> | null = null;
 
+  constructor(dbPath: string | null = null) {
+    this.vowelDefine = Deno.readTextFileSync("./assets/vowel_define.json");
+    if (dbPath) {
+      this.db = new Database<ignoreWord>(dbPath);
+      console.log(`${dbPath} を読み込みました。`);
+    } else {
+      this.db = null;
+    }
+  }
+  
   /**
    * @param {string} inputString
    * @return {ParsedWord[]}
    */
-  public async parse(inputString: string) {
+  public async parse(inputString: string): Promise<ParsedWord[]> {
     const rawResult = await this.mecab.parse(inputString);
 
     // rawResult.pronunciationがundefinedの場合、rawResult.pronunciation = rawResult.surfaceとなるようにする
@@ -84,7 +94,10 @@ class Gomamayo {
    * @param isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
    * @return 分析結果
    */
-  public async analyse(inputString: string, isIgnored = true): Promise<gomamayoResult> {
+  public async analyse(
+    inputString: string,
+    isIgnored = true,
+  ): Promise<gomamayoResult> {
     const gomamayoResult: gomamayoResult = {
       isGomamayo: false,
       combo: 0,
@@ -138,6 +151,30 @@ class Gomamayo {
       }
     }
     return gomamayoResult;
+  }
+
+  /**
+   * ゴママヨではない語を設定する。設定ファイルが必要。
+   * @param word
+   * @returns
+   */
+  public addIgnoreWord(word: string): Promise<boolean> {
+    if (this.db) {
+      this.db.insertOne({
+        surface: word,
+      })
+      .then(() => {
+        console.log(`${word} を除外設定に追加しました。`);
+      })
+      .catch((err) => {
+        console.error(err);
+        return false;
+      });
+      console.log(this.db);
+      return Promise.resolve(true);
+    } else {
+      return Promise.resolve(false);
+    }
   }
 }
 
