@@ -1,18 +1,36 @@
 import { MeCab } from "https://deno.land/x/deno_mecab@v1.1.1/mod.ts";
 // assets/vowel_define.jsonを読み込む
 
-type gomamayoResult = {
+interface ParsedWord {
+  // 0
+  surface: string;
+  // 1
+  feature: string;
+  // 2..4
+  featureDetails: string[];
+  // 5..6
+  conjugationForms: string[];
+  // 7
+  originalForm: string;
+  // 8
+  reading?: string;
+  // 9
+  pronunciation?: string;
+}
+
+interface gomamayoResult {
   isGomamayo: boolean;
   combo: number; // inputString中にあるゴママヨの総数
   detail: gomamayoDetail[];
-};
+}
 
-type gomamayoDetail = {
+interface gomamayoDetail {
   surface: string; // 該当の2語を入れる
   dimension: number; // n次ゴママヨのn
-  rawResult1: any; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
-  rawResult2: any; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
-};
+  rawResult1: ParsedWord; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
+  rawResult2: ParsedWord; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
+}
+
 
 class Gomamayo {
   private vowelDefine: string;
@@ -24,7 +42,7 @@ class Gomamayo {
 
   /**
    * @param {string} inputString
-   * @return {MeCab.ParsedWord[]}
+   * @return {ParsedWord[]}
    */
   public async parse(inputString: string) {
     const rawResult = await this.mecab.parse(inputString);
@@ -66,13 +84,17 @@ class Gomamayo {
    * @param {boolean} isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
    * @return 分析結果
    */
-  public async analyse(inputString: string, isIgnored?: boolean): Promise<gomamayoResult> {
+  public async analyse(inputString: string, isIgnored = true): Promise<gomamayoResult> {
     const gomamayoResult: gomamayoResult = {
       isGomamayo: false,
       combo: 0,
       detail: [],
     };
     const rawParseResult = await this.parse(inputString);
+
+    if (isIgnored) {
+      console.log("除外設定を使用します。");
+    }
 
     // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
     rawParseResult.map((raw) => {
