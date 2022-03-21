@@ -13,12 +13,14 @@
 
 - Deno
 - MeCab
-- MeCab 辞書
-  [mecab-ipadic-neologd](https://github.com/neologd/mecab-ipadic-neologd)がおすすめです。
+- MeCab 辞書  
+  - [mecab-ipadic-neologd](https://github.com/neologd/mecab-ipadic-neologd)がおすすめです。
+- 除外設定用設定ファイル  
+  - 必須ではありません。作成する場合は空ファイルのjsonを作成してください。AloeDBを使用しています。そちらの設定を確認してもらうのもいいかもしれません。
 
 ## 実行例
 
-`deno run --allow-run --allow-read https://deno.land/x/gomamayo_deno/src/cli.ts 株式公開買付`  
+`deno run --allow-run --allow-read https://deno.land/x/gomamayo_deno/src/cli.ts analyse 株式公開買付`  
 あるいは、`https://deno.land/x/gomamayo_deno/src/example.ts`を参考にしてください。
 
 ## 実行結果
