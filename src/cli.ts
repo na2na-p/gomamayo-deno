@@ -1,4 +1,6 @@
-import { analyse } from "./index.ts";
+import { Gomamayo } from "./index.ts";
 const inputString:string = Deno.args[0];
 
-console.log(await analyse(inputString));
+const gomamayo = new Gomamayo();
+
+console.log(await gomamayo.analyse(inputString));

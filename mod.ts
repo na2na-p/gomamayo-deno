@@ -1,1 +1,1 @@
-export { analyse } from "./src/index.ts";
+export { Gomamayo } from "./src/index.ts";
