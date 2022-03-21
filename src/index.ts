@@ -51,6 +51,7 @@ class Gomamayo {
   }
 
   /**
+   * MeCabを用いて単語単位にパースする処理
    * @param {string} inputString
    * @return {ParsedWord[]}
    */
@@ -71,6 +72,7 @@ class Gomamayo {
   }
 
   /**
+   * 長音も判定対象にできるようにするための処理
    * @param {string} rawReading
    * @return {string}
    */
@@ -89,6 +91,11 @@ class Gomamayo {
     return returnReading;
   }
 
+  /**
+   * 除外ワードリストに含まれる文字列を判定対象から除去するためのメソッド
+   * @param inputString 入力された文字列
+   * @returns 
+   */
   private async queryIgnoreWordRemove(inputString: string): Promise<string> {
     if (this.db) {
       let result: string = inputString;
