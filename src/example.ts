@@ -1,4 +1,4 @@
-import { Gomamayo } from "https://deno.land/x/gomamayo_deno@2.0.1/mod.ts";
+import { Gomamayo } from "https://deno.land/x/gomamayo_deno/mod.ts";
 
 const ignoreSettingsPath = "./data/ignoreWords.json"; // 除外ファイル設定を書いてください。設定しない場合はnull、あるいは new Gomamayo(ignoreSettingsPath) としてください。
 const gomamayo = new Gomamayo(ignoreSettingsPath);
