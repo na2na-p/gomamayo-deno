@@ -4,7 +4,7 @@ const inputString: string = Deno.args[1];
 
 // "../data/ignoreWords.json"に設定ファイルがあると想定しています。
 // なければ作成してください。
-const gomamayo = new Gomamayo("../data/ignoreWords.json");
+const gomamayo = new Gomamayo("./data/ignoreWords.json");
 
 switch (mode) {
   case "addIgnore":
@@ -17,6 +17,6 @@ switch (mode) {
     break;
 
   default:
-    console.log(await gomamayo.analyse(inputString));
+    console.log("第一引数で、実行モード(analyse/addIgnore)の指定をしてください。");
     break;
 }
