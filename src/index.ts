@@ -107,6 +107,16 @@ class Gomamayo {
 
     if (isIgnored) {
       console.log("除外設定を使用します。");
+      if (this.db) {
+        const ignoreWords = await this.db.findMany();
+        // ignoreWords[i].surfaceが、inputStringに含まれているかどうかを判定する
+        for (let i = 0; i < ignoreWords.length; i++) {
+          if (inputString.includes(ignoreWords[i].surface)) {
+            console.log(`除外ワード\n${ignoreWords[i].surface}\nが含まれていたため、判定を中断します。`);
+            return gomamayoResult;
+          }
+        }
+      }
     }
 
     // rawParseResult[i].readingに「ー」が含まれていたらprolongedSoundMarkVowelizeを実行し、それに置き換える
@@ -170,7 +180,6 @@ class Gomamayo {
         console.error(err);
         return false;
       });
-      console.log(this.db);
       return Promise.resolve(true);
     } else {
       return Promise.resolve(false);
