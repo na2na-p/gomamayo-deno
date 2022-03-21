@@ -81,7 +81,7 @@ class Gomamayo {
 
   /**
    * @param {string} inputString 判定したい文字列
-   * @param {boolean} isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
+   * @param isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
    * @return 分析結果
    */
   public async analyse(inputString: string, isIgnored = true): Promise<gomamayoResult> {
