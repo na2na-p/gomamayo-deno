@@ -27,8 +27,8 @@ interface gomamayoResult {
 interface gomamayoDetail {
   surface: string; // 該当の2語を入れる
   dimension: number; // n次ゴママヨのn
-  rawResult1: ParsedWord; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
-  rawResult2: ParsedWord; // mecab.parseの結果 気持ち的にはMeCabのParsedWordって型を使いたい。
+  rawResult1: ParsedWord;
+  rawResult2: ParsedWord;
 }
 
 interface ignoreWord {
@@ -120,7 +120,7 @@ class Gomamayo {
    * @param isIgnored 除外設定を使うかどうか。指定した文字列を除外する場合はtrue。デフォルトはtrue。
    * @return 分析結果
    */
-  public async analyse(
+  public async analyze(
     inputString: string,
     isIgnored = true,
   ): Promise<gomamayoResult> {
